@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Koneksi ke database
 $host = 'localhost';
 $db   = 'sd_sidorejo';
 $user = 'root';
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $password === '') {
         $error = "Username dan Password harus diisi!";
     } else {
-        $stmt = $mysqli->prepare("SELECT id, password FROM admin WHERE username = ?");
+        $stmt = $mysqli->prepare("SELECT id, password FROM admin WHERE BINARY username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();

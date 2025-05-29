@@ -1,11 +1,9 @@
 <?php
-// Koneksi database
 $conn = new mysqli("localhost", "root", "", "sd_sidorejo");
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Ambil data guru dari database
 $guruList = [];
 $sql = "SELECT id, nama, jabatan, foto FROM guru ORDER BY nama ASC";
 $result = $conn->query($sql);
@@ -15,7 +13,6 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Ambil data kegiatan dari database
 $kegiatanList = [];
 $sql = "SELECT id, judul, deskripsi, gambar, tanggal FROM kegiatan ORDER BY tanggal DESC";
 $result = $conn->query($sql);
@@ -25,7 +22,6 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Ambil data prestasi dari database
 $prestasiList = [];
 $sql = "SELECT id, nama, deskripsi, gambar, tanggal FROM prestasi ORDER BY tanggal DESC";
 $result = $conn->query($sql);
@@ -44,7 +40,7 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-$baseUrl = '/web-sd';
+$baseUrl = '/sdn_sidorejo'; // Ganti dengan URL dasar aplikasi Anda
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -104,13 +100,13 @@ $baseUrl = '/web-sd';
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="#dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="index.php#dashboard">Dashboard User</a></li>
           <li class="nav-item"><a class="nav-link" href="#manage-guru">Guru & Staf</a></li>
           <li class="nav-item"><a class="nav-link" href="#manage-kegiatan">Kegiatan</a></li>
           <li class="nav-item"><a class="nav-link" href="#manage-prestasi">Prestasi</a></li>
           <li class="nav-item"><a class="nav-link" href="#manage-galeri">Galeri</a></li>
-          <a href="logout.php" class="btn btn-danger">Logout</a>
         </ul>
+        <a href="logout.php" class="btn btn-danger">Logout</a>
       </div>
     </div>
   </nav>

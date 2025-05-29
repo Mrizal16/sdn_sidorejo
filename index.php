@@ -37,8 +37,9 @@
           <li class="nav-item"><a class="nav-link" href="#kegiatan">Kegiatan</a></li>
           <li class="nav-item"><a class="nav-link" href="#galeri">Galeri Sekolah</a></li>
           <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
-          <a href="login.php" class="btn btn-success">Login</a>
+          <!-- <a href="login.php" class="btn btn-success">Login</a> -->
         </ul>
+        <a href="login.php" class="btn btn-success ms-3">Login</a>
       </div>
     </div>
   </nav>

@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $ext = pathinfo($fileName, PATHINFO_EXTENSION);
             $newFileName = uniqid('guru_', true) . '.' . $ext;
-            $uploadDir = __DIR__ . '/uploads/';
+            $uploadDir = __DIR__ . '/../uploads/';
             $destPath = $uploadDir . $newFileName;
 
             if (!move_uploaded_file($fileTmpPath, $destPath)) {
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="mb-3">
         <label for="foto" class="form-label">Foto (kosongkan jika tidak ingin mengganti)</label><br>
         <?php
-          $fotoUrl = '/web-sd/crud/uploads/' . ($guru['foto'] ?: 'default.png');
+          $fotoUrl = '../uploads/' . ($guru['foto'] ?: 'default.png');
         ?>
         <img src="<?= htmlspecialchars($fotoUrl) ?>" alt="Foto Guru" style="width:80px; height:80px; object-fit:cover; border-radius:50%; border:1px solid #ccc;"><br><br>
         <input type="file" id="foto" name="foto" accept="image/png, image/jpeg" class="form-control" />

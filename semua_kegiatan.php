@@ -35,7 +35,7 @@
           <li class="nav-item"><a class="nav-link" href="index.php#tentang">Tentang Kami</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php#guru">Guru & Staf</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php#prestasi">Prestasi</a></li>
-          <li class="nav-item"><a class="nav-link" href="index.php#kegiatan">Kegiatan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#kegiatan">Kegiatan</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php#galeri">Galeri Sekolah</a></li>
           <li class="nav-item"><a class="nav-link" href="index.php#kontak">Kontak</a></li>
         </ul>
@@ -81,9 +81,6 @@
           $conn->close();
         ?>
       </ul>
-      <div class="mt-3 text-end">
-        <a href="semua_kegiatan.php" class="btn btn-outline-primary">Lihat Semua Kegiatan</a>
-      </div>
     </section>
 
   </main>
