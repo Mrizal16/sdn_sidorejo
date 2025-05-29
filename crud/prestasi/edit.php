@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = $_POST['nama'];
     $deskripsi = $_POST['deskripsi'];
     $tanggal = $_POST['tanggal'];
+    $kategori = $_POST['kategori'];
     $gambarName = $data['gambar'];
 
     if (!empty($_FILES['gambar']['name'])) {
@@ -32,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES['gambar']['tmp_name'], $uploadDir . $gambarName);
     }
 
-    $stmt = $conn->prepare("UPDATE prestasi SET nama = ?, deskripsi = ?, tanggal = ?, gambar = ? WHERE id = ?");
-    $stmt->bind_param("ssssi", $nama, $deskripsi, $tanggal, $gambarName, $id);
+    $stmt = $conn->prepare("UPDATE prestasi SET nama = ?, deskripsi = ?, tanggal = ?, kategori = ?, gambar = ? WHERE id = ?");
+    $stmt->bind_param("sssssi", $nama, $deskripsi, $tanggal, $kategori, $gambarName, $id);
     $stmt->execute();
 
     header("Location: ../../admin.php#manage-prestasi");
@@ -62,6 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="mb-3">
       <label>Tanggal</label>
       <input type="date" name="tanggal" class="form-control" value="<?= $data['tanggal'] ?>" required>
+    </div>
+    <div class="mb-3">
+      <label>Kategori</label>
+      <input type="text" name="kategori" class="form-control" value="<?= htmlspecialchars($data['kategori']) ?>" required>
     </div>
     <div class="mb-3">
       <label>Gambar (kosongkan jika tidak ingin mengubah)</label>
