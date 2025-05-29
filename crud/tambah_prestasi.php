@@ -1,10 +1,14 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "sd_sidorejo");
 
+// Pastikan kolom kategori ada di database (jalankan sekali saja)
+$conn->query("ALTER TABLE prestasi ADD COLUMN IF NOT EXISTS kategori VARCHAR(100) NOT NULL DEFAULT 'Umum'");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = $_POST['nama'];
     $deskripsi = $_POST['deskripsi'];
     $tanggal = $_POST['tanggal'];
+    $kategori = $_POST['kategori'] ?? 'Umum';  // Ambil kategori dari form
     $gambarName = '';
 
     if (!empty($_FILES['gambar']['name'])) {
@@ -17,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES['gambar']['tmp_name'], $targetPath);
     }
 
-    $stmt = $conn->prepare("INSERT INTO prestasi (nama, deskripsi, tanggal, gambar) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $nama, $deskripsi, $tanggal, $gambarName);
+    $stmt = $conn->prepare("INSERT INTO prestasi (nama, deskripsi, tanggal, gambar, kategori) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $nama, $deskripsi, $tanggal, $gambarName, $kategori);
     $stmt->execute();
 
     header("Location: ../admin.php#manage-prestasi");
@@ -47,6 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="mb-3">
       <label>Tanggal Prestasi</label>
       <input type="date" name="tanggal" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label>Kategori</label>
+      <input type="text" name="kategori" class="form-control" placeholder="Misal: Olahraga, Akademik, Seni" required>
     </div>
     <div class="mb-3">
       <label>Gambar</label>

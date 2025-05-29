@@ -21,7 +21,6 @@
     </div>
   </header>
 
-
   <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm mb-4">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">Dashboard</a>
@@ -45,9 +44,43 @@
   </nav>
 
   <main class="container mb-5">
-    
+
     <section id="prestasi" class="mb-5">
       <h2>Semua Prestasi Sekolah</h2>
+
+      <!-- Form filter dan pencarian -->
+      <form method="GET" class="row g-3 mb-4 align-items-end">
+        <div class="col-md-4">
+          <label for="kategori" class="form-label">Filter Kategori</label>
+          <select name="kategori" id="kategori" class="form-select">
+            <option value="">Semua Kategori</option>
+            <?php
+              // Koneksi sementara untuk ambil kategori unik
+              $connCat = new mysqli("localhost", "root", "", "sd_sidorejo");
+              if (!$connCat->connect_error) {
+                $kategoriResult = $connCat->query("SELECT DISTINCT kategori FROM prestasi ORDER BY kategori ASC");
+                if ($kategoriResult && $kategoriResult->num_rows > 0) {
+                  $selectedKat = $_GET['kategori'] ?? '';
+                  while ($kat = $kategoriResult->fetch_assoc()) {
+                    $katEsc = htmlspecialchars($kat['kategori']);
+                    $selected = ($selectedKat === $kat['kategori']) ? 'selected' : '';
+                    echo "<option value=\"$katEsc\" $selected>$katEsc</option>";
+                  }
+                }
+                $connCat->close();
+              }
+            ?>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="search" class="form-label">Cari Prestasi</label>
+          <input type="text" id="search" name="search" class="form-control" placeholder="Cari berdasarkan nama atau deskripsi" value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" />
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+      </form>
+
       <div class="row row-cols-1 row-cols-md-2 g-4">
         <?php
           $conn = new mysqli("localhost", "root", "", "sd_sidorejo");
@@ -55,7 +88,21 @@
               die("Koneksi gagal: " . $conn->connect_error);
           }
 
-          $result = $conn->query("SELECT * FROM prestasi ORDER BY tanggal DESC");
+          // Tangkap parameter filter dan pencarian dari GET
+          $kategori = isset($_GET['kategori']) ? $conn->real_escape_string($_GET['kategori']) : '';
+          $search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
+
+          // Buat query dengan kondisi filter
+          $sql = "SELECT * FROM prestasi WHERE 1=1";
+          if ($kategori !== '') {
+              $sql .= " AND kategori = '$kategori'";
+          }
+          if ($search !== '') {
+              $sql .= " AND (nama LIKE '%$search%' OR deskripsi LIKE '%$search%')";
+          }
+          $sql .= " ORDER BY tanggal DESC";
+
+          $result = $conn->query($sql);
 
           if ($result && $result->num_rows > 0) {
               while ($row = $result->fetch_assoc()) {
@@ -76,7 +123,7 @@
                   </div>';
               }
           } else {
-              echo '<p class="text-muted">Belum ada data prestasi yang ditambahkan.</p>';
+              echo '<p class="text-muted">Belum ada data prestasi yang sesuai filter atau pencarian.</p>';
           }
 
           $conn->close();
